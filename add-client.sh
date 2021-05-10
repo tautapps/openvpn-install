@@ -1,20 +1,13 @@
 #!/bin/bash
  
 CLIENTEXISTS=$(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep -c -E "/CN=$1\$")
-if [[ $CLIENTEXISTS == '1' ]]; then
-	echo ""
-	echo "The specified client CN was already found in easy-rsa, please choose another name."
-	exit
-else
-	cd /etc/openvpn/easy-rsa/ || return
+ 
+ 	cd /etc/openvpn/easy-rsa/ || return
 	
 		./easyrsa build-client-full "$1" nopass
-		;;
-		
-	esac
-	echo "Client $1 added."
-fi
-
+ 		
+	 
+ 
 
 	# if not SUDO_USER, use /root
 homeDir="/root"
