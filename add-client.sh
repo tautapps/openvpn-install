@@ -1,10 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC1091,SC2164,SC2034,SC1072,SC1073,SC1009
 
-  
-function newClient() {
-  
-	CLIENTEXISTS=$(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep -c -E "/CN=$1\$")
+ 	CLIENTEXISTS=$(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep -c -E "/CN=$1\$")
 	if [[ $CLIENTEXISTS == '1' ]]; then
 		echo ""
 		echo "The specified client CN was already found in easy-rsa, please choose another name."
@@ -59,10 +56,4 @@ function newClient() {
 			;;
 		esac
 	} >>"$homeDir/$1.ovpn"
-
- 	exit 0
-}
  
-
-# Check for root, TUN, OS...
-newClient
