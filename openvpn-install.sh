@@ -1059,7 +1059,7 @@ verb 3" >>/etc/openvpn/client-template.txt
 	fi
 
 	# Generate the custom client.ovpn
-	newClient
+	# newClient
 	echo "If you want to add more clients, you simply need to run this script another time!"
 }
 
