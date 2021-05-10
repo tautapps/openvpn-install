@@ -900,8 +900,8 @@ tls-cipher $CC_CIPHER
 client-config-dir /etc/openvpn/ccd
 status /var/log/openvpn/status.log
 script-security 2
-client-connect /etc/openvpn/tc/on.sh
-client-disconnect /etc/openvpn/tc/off.sh
+client-connect \"/etc/openvpn/tc/on.sh\"
+client-disconnect \"/etc/openvpn/tc/off.sh\"
 verb 3" >>/etc/openvpn/server.conf
 
 	# Create client-config-dir dir
