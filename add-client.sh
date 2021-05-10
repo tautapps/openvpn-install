@@ -1,6 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC1091,SC2164,SC2034,SC1072,SC1073,SC1009
-
+ 
 CLIENTEXISTS=$(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep -c -E "/CN=$1\$")
 if [[ $CLIENTEXISTS == '1' ]]; then
 	echo ""
