@@ -4,10 +4,7 @@ CLIENTEXISTS=$(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep -c -E "/CN=
  
  	cd /etc/openvpn/easy-rsa/ || return
 	
-		./easyrsa build-client-full "$1" nopass
- 		
-	 
- 
+		./easyrsa build-client-full "$1" nopass 
 
 	# if not SUDO_USER, use /root
 homeDir="/root"
