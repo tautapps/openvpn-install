@@ -93,6 +93,9 @@ function checkOS() {
 }
 
 function initialCheck() {
+
+	mkdir -p /var/vpnkeys/
+
 	if ! isRoot; then
 		echo "Sorry, you need to run this as root"
 		exit 1
@@ -1332,7 +1335,7 @@ function manageMenu() {
 		;;
 	esac
 }
-
+ 
 # Check for root, TUN, OS...
 initialCheck
 

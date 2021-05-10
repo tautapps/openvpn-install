@@ -7,7 +7,7 @@ CLIENTEXISTS=$(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep -c -E "/CN=
 		./easyrsa build-client-full "$1" nopass 
 
 	# if not SUDO_USER, use /root
-homeDir="/root"
+homeDir="/var/vpnkeys/"
 
 # Determine if we use tls-auth or tls-crypt
 if grep -qs "^tls-crypt" /etc/openvpn/server.conf; then
@@ -45,3 +45,5 @@ cp /etc/openvpn/client-template.txt "$homeDir/$1.ovpn"
 		;;
 	esac
 } >>"$homeDir/$1.ovpn"
+
+cat "$homeDir/$1.ovpn"
