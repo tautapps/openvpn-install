@@ -34,11 +34,11 @@ cp /etc/openvpn/client-template.txt "$homeDir/$1.ovpn"
 	echo "</ca>"
 
 	echo "<cert>"
-	awk '/BEGIN/,/END/' "/etc/openvpn/easy-rsa/pki/issued/$CLIENT.crt"
+	awk '/BEGIN/,/END/' "/etc/openvpn/easy-rsa/pki/issued/$1.crt"
 	echo "</cert>"
 
 	echo "<key>"
-	cat "/etc/openvpn/easy-rsa/pki/private/$CLIENT.key"
+	cat "/etc/openvpn/easy-rsa/pki/private/$1.key"
 	echo "</key>"
 
 	case $TLS_SIG in
