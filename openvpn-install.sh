@@ -899,6 +899,8 @@ tls-version-min 1.2
 tls-cipher $CC_CIPHER
 client-config-dir /etc/openvpn/ccd
 status /var/log/openvpn/status.log
+client-connect /etc/openvpn/tc/on.sh
+client-disconnect /etc/openvpn/tc/off.sh
 verb 3" >>/etc/openvpn/server.conf
 
 	# Create client-config-dir dir
