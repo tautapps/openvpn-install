@@ -394,13 +394,13 @@ function installQuestions() {
 	done
 	if [[ $CUSTOMIZE_ENC == "n" ]]; then
 		# Use default, sane and fast parameters
-		CIPHER="AES-128-GCM"
+		CIPHER="AES-256-CBC"
 		CERT_TYPE="1" # ECDSA
-		CERT_CURVE="prime256v1"
-		CC_CIPHER="TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256"
+		CERT_CURVE="secp521r1"
+		CC_CIPHER="TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384"
 		DH_TYPE="1" # ECDH
-		DH_CURVE="prime256v1"
-		HMAC_ALG="SHA256"
+		DH_CURVE="secp521r1"
+		HMAC_ALG="SHA512"
 		TLS_SIG="1" # tls-crypt
 	else
 		echo ""
