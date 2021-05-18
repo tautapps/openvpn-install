@@ -153,7 +153,7 @@ prefetch: yes' >>/etc/unbound/unbound.conf
 			fi
 
 			echo 'server:
-	use-syslog: yes
+	use-syslog: no
 	do-daemonize: no
 	username: "unbound"
 	directory: "/etc/unbound"
