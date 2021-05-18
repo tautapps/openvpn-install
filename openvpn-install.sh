@@ -632,7 +632,7 @@ function installOpenVPN() {
 		if [[ $IPV6_SUPPORT == "y" ]]; then
 			PUBLIC_IP=$(curl -s ipv6.icanhazip.com | xargs echo -n)
 		else
-			PUBLIC_IP=$(curl -s https://get.geojs.io/v1/ip | xargs echo -n)
+			PUBLIC_IP=$(ip a | grep -v  inet6 | grep -v 127.0.0.1 | awk '/inet/ { print $2 }' | head -1 | cut -d "/" -f 1)
 		fi
 		ENDPOINT=${ENDPOINT:-$PUBLIC_IP}
 	fi
