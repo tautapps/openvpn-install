@@ -621,7 +621,7 @@ function installOpenVPN() {
 		IPV6_SUPPORT=${IPV6_SUPPORT:-n}
 		PORT_CHOICE=${PORT_CHOICE:-1}
 		PROTOCOL_CHOICE=${PROTOCOL_CHOICE:-1}
-		DNS=${DNS:-3}
+		DNS=${DNS:-9}
 		COMPRESSION_ENABLED=${COMPRESSION_ENABLED:-n}
 		CUSTOMIZE_ENC=${CUSTOMIZE_ENC:-n}
 		CLIENT=${CLIENT:-client}
@@ -887,7 +887,24 @@ push "redirect-gateway ipv6"' >>/etc/openvpn/server.conf
 		;;
 	esac
 
-	echo "crl-verify crl.pem
+# echo "crl-verify crl.pem
+# ca ca.crt
+# cert $SERVER_NAME.crt
+# key $SERVER_NAME.key
+# auth $HMAC_ALG
+# cipher $CIPHER
+# ncp-ciphers $CIPHER
+# tls-server
+# tls-version-min 1.2
+# tls-cipher $CC_CIPHER
+# client-config-dir /etc/openvpn/ccd
+# status /var/log/openvpn/status.log
+# script-security 2
+# client-connect \"/etc/openvpn/tc/on.sh\"
+# client-disconnect \"/etc/openvpn/tc/off.sh\"
+# verb 3" >>/etc/openvpn/server.conf
+	
+echo "crl-verify crl.pem
 ca ca.crt
 cert $SERVER_NAME.crt
 key $SERVER_NAME.key
@@ -899,9 +916,7 @@ tls-version-min 1.2
 tls-cipher $CC_CIPHER
 client-config-dir /etc/openvpn/ccd
 status /var/log/openvpn/status.log
-script-security 2
-client-connect \"/etc/openvpn/tc/on.sh\"
-client-disconnect \"/etc/openvpn/tc/off.sh\"
+script-security 2 
 verb 3" >>/etc/openvpn/server.conf
 
 	# Create client-config-dir dir
