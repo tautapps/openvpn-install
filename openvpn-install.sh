@@ -153,7 +153,7 @@ prefetch: yes' >>/etc/unbound/unbound.conf
 			fi
 
 			echo 'server:
-	use-syslog: no
+	use-syslog: yes
 	do-daemonize: no
 	username: "unbound"
 	directory: "/etc/unbound"
@@ -276,7 +276,7 @@ function installQuestions() {
 	done
 	echo ""
 	echo "What port do you want OpenVPN to listen to?"
-	echo "   1) Default: 7612"
+	echo "   1) Default: 1194"
 	echo "   2) Custom"
 	echo "   3) Random [49152-65535]"
 	until [[ $PORT_CHOICE =~ ^[1-3]$ ]]; do
@@ -284,11 +284,11 @@ function installQuestions() {
 	done
 	case $PORT_CHOICE in
 	1)
-		PORT="7612"
+		PORT="1194"
 		;;
 	2)
 		until [[ $PORT =~ ^[0-9]+$ ]] && [ "$PORT" -ge 1 ] && [ "$PORT" -le 65535 ]; do
-			read -rp "Custom port [1-65535]: " -e -i 7612 PORT
+			read -rp "Custom port [1-65535]: " -e -i 1194 PORT
 		done
 		;;
 	3)
@@ -887,23 +887,7 @@ push "redirect-gateway ipv6"' >>/etc/openvpn/server.conf
 		;;
 	esac
 
-# echo "crl-verify crl.pem
-# ca ca.crt
-# cert $SERVER_NAME.crt
-# key $SERVER_NAME.key
-# auth $HMAC_ALG
-# cipher $CIPHER
-# ncp-ciphers $CIPHER
-# tls-server
-# tls-version-min 1.2
-# tls-cipher $CC_CIPHER
-# client-config-dir /etc/openvpn/ccd
-# status /var/log/openvpn/status.log
-# script-security 2
-# client-connect \"/etc/openvpn/tc/on.sh\"
-# client-disconnect \"/etc/openvpn/tc/off.sh\"
-# verb 3" >>/etc/openvpn/server.conf
-	
+ 
 echo "crl-verify crl.pem
 ca ca.crt
 cert $SERVER_NAME.crt
@@ -916,7 +900,6 @@ tls-version-min 1.2
 tls-cipher $CC_CIPHER
 client-config-dir /etc/openvpn/ccd
 status /var/log/openvpn/status.log
-script-security 2 
 verb 3" >>/etc/openvpn/server.conf
 
 	# Create client-config-dir dir
@@ -935,7 +918,7 @@ verb 3" >>/etc/openvpn/server.conf
 	# If SELinux is enabled and a custom port was selected, we need this
 	if hash sestatus 2>/dev/null; then
 		if sestatus | grep "Current mode" | grep -qs "enforcing"; then
-			if [[ $PORT != '7612' ]]; then
+			if [[ $PORT != '1194' ]]; then
 				semanage port -a -t openvpn_port_t -p "$PROTOCOL" "$PORT"
 			fi
 		fi
@@ -1058,8 +1041,12 @@ resolv-retry infinite
 nobind
 persist-key
 persist-tun
-sndbuf 0
-rcvbuf 0
+sndbuf 393216
+rcvbuf 393216
+push \"sndbuf 393216\"
+push \"rcvbuf 393216\"
+tun-mtu 1400 
+mssfix 1360  
 remote-cert-tls server
 verify-x509-name $SERVER_NAME name
 auth $HMAC_ALG
@@ -1285,7 +1272,7 @@ function removeOpenVPN() {
 		# SELinux
 		if hash sestatus 2>/dev/null; then
 			if sestatus | grep "Current mode" | grep -qs "enforcing"; then
-				if [[ $PORT != '7612' ]]; then
+				if [[ $PORT != '1194' ]]; then
 					semanage port -d -t openvpn_port_t -p "$PROTOCOL" "$PORT"
 				fi
 			fi
