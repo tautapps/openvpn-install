@@ -241,7 +241,7 @@ function installQuestions() {
 	if [[ $APPROVE_IP =~ n ]]; then
 		read -rp "IP address: " -e -i "$IP" IP
 	fi
-	# If $IP is a private IP address, the server must be behind NAT
+	# If $IP is a private IP address, the server must be behind NAT
 	if echo "$IP" | grep -qE '^(10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.|192\.168)'; then
 		echo ""
 		echo "It seems this server is behind NAT. What is its public IPv4 address or hostname?"
@@ -630,9 +630,9 @@ function installOpenVPN() {
 
 		# Behind NAT, we'll default to the publicly reachable IPv4/IPv6.
 		if [[ $IPV6_SUPPORT == "y" ]]; then
-			PUBLIC_IP=$(curl -s ipv6.icanhazip.com | xargs echo -n)
+			PUBLIC_IP=$(curl -6 https://ifconfig.co)
 		else
-			PUBLIC_IP=$(ip a | grep -v  inet6 | grep -v 127.0.0.1 | awk '/inet/ { print $2 }' | head -1 | cut -d "/" -f 1)
+			PUBLIC_IP=$(curl -4 https://ifconfig.co)
 		fi
 		ENDPOINT=${ENDPOINT:-$PUBLIC_IP}
 	fi
@@ -1059,12 +1059,6 @@ resolv-retry infinite
 nobind
 persist-key
 persist-tun
-sndbuf 512000
-rcvbuf 512000
-push \"sndbuf 512000\"
-push \"rcvbuf 512000\"
-tun-mtu 1450 
-mssfix 1410  
 remote-cert-tls server
 verify-x509-name $SERVER_NAME name
 auth $HMAC_ALG
@@ -1360,7 +1354,7 @@ function manageMenu() {
 		;;
 	esac
 }
- 
+
 # Check for root, TUN, OS...
 initialCheck
 
