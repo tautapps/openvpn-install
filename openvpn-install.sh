@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC1091,SC2164,SC2034,SC1072,SC1073,SC1009
 
-# Secure OpenVPN server installer for Debian, Ubuntu, CentOS, Amazon Linux 2, Fedora, Oracle Linux 8 and Arch Linux
+# Secure OpenVPN server installer for Debian, Ubuntu, CentOS, Amazon Linux 2, Fedora, Oracle Linux 8, Arch Linux, Rocky Linux and AlmaLinux.
 # https://github.com/angristan/openvpn-install
 
 function isRoot() {
@@ -55,7 +55,7 @@ function checkOS() {
 		if [[ $ID == "fedora" || $ID_LIKE == "fedora" ]]; then
 			OS="fedora"
 		fi
-		if [[ $ID == "centos" ]]; then
+		if [[ $ID == "centos" || $ID == "rocky" || $ID == "almalinux" ]]; then
 			OS="centos"
 			if [[ ! $VERSION_ID =~ (7|8) ]]; then
 				echo "⚠️ Your version of CentOS is not supported."
@@ -1058,12 +1058,12 @@ resolv-retry infinite
 nobind
 persist-key
 persist-tun
-sndbuf 393216
-rcvbuf 393216
-push \"sndbuf 393216\"
-push \"rcvbuf 393216\"
-tun-mtu 1400 
-mssfix 1360  
+sndbuf 512000
+rcvbuf 512000
+push \"sndbuf 512000\"
+push \"rcvbuf 512000\"
+tun-mtu 1450 
+mssfix 1410  
 remote-cert-tls server
 verify-x509-name $SERVER_NAME name
 auth $HMAC_ALG
