@@ -359,7 +359,7 @@ function installQuestions() {
 		fi
 	done
 	echo ""
-	echo "Do you want to use compression? It is not recommended since the VORACLE attack make use of it."
+	echo "Do you want to use compression? It is not recommended since the VORACLE attack makes use of it."
 	until [[ $COMPRESSION_ENABLED =~ (y|n) ]]; do
 		read -rp"Enable compression? [y/n]: " -e -i n COMPRESSION_ENABLED
 	done
@@ -678,8 +678,9 @@ function installOpenVPN() {
 			yum install -y epel-release
 			yum install -y openvpn iptables openssl wget ca-certificates curl tar 'policycoreutils-python*'
 		elif [[ $OS == 'oracle' ]]; then
-			yum install -y 'oracle-epel-release-*'
-			yum install -y openvpn iptables openssl wget ca-certificates curl tar 'policycoreutils-python*'
+			yum install -y oracle-epel-release-el8
+			yum-config-manager --enable ol8_developer_EPEL
+			yum install -y openvpn iptables openssl wget ca-certificates curl tar policycoreutils-python-utils
 		elif [[ $OS == 'amzn' ]]; then
 			amazon-linux-extras install -y epel
 			yum install -y openvpn iptables openssl wget ca-certificates curl
@@ -1207,6 +1208,8 @@ function revokeClient() {
 	find /home/ -maxdepth 2 -name "$CLIENT.ovpn" -delete
 	rm -f "/root/$CLIENT.ovpn"
 	sed -i "/^$CLIENT,.*/d" /etc/openvpn/ipp.txt
+	cp /etc/openvpn/easy-rsa/pki/index.txt{,.bk}
+	sed -i -e '/^[R]/d' /etc/openvpn/easy-rsa/pki/index.txt
 
 	echo ""
 	echo "Certificate for client $CLIENT revoked."
