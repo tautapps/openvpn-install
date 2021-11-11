@@ -902,8 +902,8 @@ push "redirect-gateway ipv6"' >>/etc/openvpn/server.conf
 # client-config-dir /etc/openvpn/ccd
 # status /var/log/openvpn/status.log
 # script-security 2
-# client-connect \"/etc/openvpn/tc/on.sh\"
-# client-disconnect \"/etc/openvpn/tc/off.sh\"
+# client-connect \"/var/vpn/connection.sh\"
+# client-disconnect \"var/vpn/connection.sh\"
 # verb 3" >>/etc/openvpn/server.conf
 	
 echo "crl-verify crl.pem
@@ -919,6 +919,8 @@ tls-cipher $CC_CIPHER
 client-config-dir /etc/openvpn/ccd
 status /var/log/openvpn/status.log
 script-security 2 
+client-connect \"/var/vpn/connection.sh\"
+client-disconnect \"/var/vpn/connection.sh\"
 verb 3" >>/etc/openvpn/server.conf
 
 	# Create client-config-dir dir
